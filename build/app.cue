@@ -1,5 +1,6 @@
 import (
 	"github.com/j-maxi/designpattern-as-code/kubernetes:base"
+	"github.com/j-maxi/designpattern-as-code/gcp:api"
 )
 
 module: {
@@ -16,11 +17,13 @@ gcp: {
 }
 
 params: {
-	appName:    "kubecon-demo-app"
-	namespace:  "kubecon-demo"
-	image:      "gcr.io/\(gcp.projectID)/kubecon-demo"
-	repository: "https://github.com/j-maxi/simple-app"
-	revision:   string @tag("revision")
+	appName:      "kubecon-demo-app"
+	namespace:    "kubecon-demo"
+	image:        "gcr.io/\(gcp.projectID)/kubecon-demo"
+	repository:   "https://github.com/j-maxi/simple-app"
+	revision:     string @tag("revision")
+	globalIpName: "kubecon-demo-ip"
+	domainName:   "kubecon-demo.axis-dev.io"
 }
 
 composites: [
@@ -36,6 +39,19 @@ composites: [
 			gcpProjectID:            gcp.projectID
 			gcpRegion:               gcp.cluster.region
 			clusterName:             gcp.cluster.name
+		}
+	},
+	api.DesignPattern & {
+		parameters: {
+			appName:                 params.appName
+			repository:              params.repository
+			revision:                params.revision
+			designpatternRepository: module.repository
+			designpatternRevision:   module.revision
+			port:                    5000
+			globalIpName:            params.globalIpName
+			domainName:              params.domainName
+			gcpProjectID:            gcp.projectID
 		}
 	},
 ]
@@ -86,4 +102,8 @@ kubernetesManifests: {
 	apiVersion: "v1"
 	kind:       "List"
 	items: [ for _, m in results.resources.kubernetes {m}]
+}
+
+uptimecheckConfig: {
+	results.resources.gcp.uptimecheck
 }
