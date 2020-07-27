@@ -77,7 +77,7 @@ toTektonTask: {
 tektonPipeline: {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "Pipeline"
-	metadata: name: "deploy-with-designpattern"
+	metadata: name: "deploy-with-designpattern-api"
 	//spec: tasks: _
 
 	// build
