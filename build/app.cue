@@ -1,9 +1,8 @@
 import (
 	"github.com/j-maxi/designpattern-as-code/base:resource"
 	"github.com/j-maxi/designpattern-as-code/kubernetes:base"
+	"github.com/j-maxi/designpattern-as-code/gcp:api"
 )
-
-// a sample application config which only uses "base" Design Pattern
 
 // global parameters
 globalParams: {
@@ -28,6 +27,14 @@ patterns: [
 			namespace:   "kubecon-demo"
 			image:       "gcr.io/\(globalParams.gcp.projectID)/kubecon-demo"
 			clusterName: "REPLACE-with-your-app-cluster-name"
+		}
+	},
+	api.DesignPattern & {
+		parameters: {
+			globals:      globalParams
+			port:         5000
+			globalIpName: "kubecon-demo-ip"
+			domainName:   "REPLACE-with-domain-name"
 		}
 	},
 ]
