@@ -2,6 +2,8 @@
 
 Sample application to show how Design Pattern as Code works.
 
+**This repository is moved to https://github.com/nttcom/designpattern-sample-app. See the repo for the latest code.**
+
 ## Overview
 
 This application is a simple Flask API and uses `kubernetes/base` and `gcp/api` Design Patterns, which run the app with the following GCP products.
